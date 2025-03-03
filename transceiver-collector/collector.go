@@ -313,7 +313,7 @@ func (t *TransceiverCollector) getMonitoredInterfaces() ([]string, error) {
 	regexIncludeValid := t.includeInterfacesRegex != nil && t.includeInterfacesRegex.String() != ""
 	regexExcludeValid := t.excludeInterfacesRegex != nil && t.excludeInterfacesRegex.String() != ""
 
-	ifaceNames := []string{}
+	var ifaceNames []string
 	for _, iface := range interfaces {
 		if iface.Flags&net.FlagLoopback > 0 {
 			continue

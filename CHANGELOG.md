@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.1 - 2025-03-03
+### Changes
+* Fixed a bug when setting include / exclude regex to nil
+* Added more logging and minor refactors
+
 ## 1.5.0 - 2024-05-06
 ### Changes
 * Added the option to include and exclude interfaces with regex

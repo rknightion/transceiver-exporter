@@ -6,6 +6,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 env:
@@ -48,7 +51,9 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
-            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=latest,enable=${{ github.event_name == 'release' }}
+            type=raw,value=dev,enable=${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
+            type=ref,event=pr
             type=sha,prefix=sha-
 
       - name: Build and push by digest
@@ -114,7 +119,9 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
-            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=latest,enable=${{ github.event_name == 'release' }}
+            type=raw,value=dev,enable=${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
+            type=ref,event=pr
             type=sha,prefix=sha-
 
       - name: Build and push by digest
@@ -184,7 +191,9 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
-            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=latest,enable=${{ github.event_name == 'release' }}
+            type=raw,value=dev,enable=${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
+            type=ref,event=pr
             type=sha,prefix=sha-
 
       - name: Create manifest list and push

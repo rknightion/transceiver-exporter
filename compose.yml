@@ -4,74 +4,70 @@
 # Usage:
 #   docker compose up -d
 #
-# Prerequisites:
-#   - Host network mode is REQUIRED (container must see host interfaces)
-#   - CAP_NET_ADMIN is REQUIRED (for ethtool ioctl operations)
+# REQUIRED: Host network mode
+# The exporter enumerates interfaces via net.Interfaces() which only sees
+# interfaces in its own network namespace. Bridge mode would only show
+# container-local interfaces (eth0, lo), not host physical NICs.
+# CAP_NET_ADMIN is REQUIRED (for ethtool ioctl (SIOCETHTOOL) operations)
 
 services:
   transceiver-exporter:
-    image: ghcr.io/${GITHUB_REPOSITORY:-local/transceiver-exporter}:latest
+    image: ghcr.io/${GITHUB_REPOSITORY:-wobcom/transceiver-exporter}:latest
     container_name: transceiver-exporter
-
-    # REQUIRED: Host network mode
-    # The exporter enumerates interfaces via net.Interfaces() which only sees
-    # interfaces in its own network namespace. Bridge mode would only show
-    # container-local interfaces (eth0, lo), not host physical NICs.
     network_mode: host
-
-    # Security: Drop all capabilities, add only what's needed
     cap_drop:
       - ALL
     cap_add:
-      # REQUIRED: For ethtool ioctl (SIOCETHTOOL) operations
       - NET_ADMIN
-
-    # Security hardening
     security_opt:
       - no-new-privileges:true
     read_only: true
-
     # Restart policy
     restart: unless-stopped
-
-    # Configuration via command-line arguments
-    # Customize these based on your environment
+    # ===========================================================================
+    # Command Line Options
+    # ===========================================================================
+    # All available options are listed below. Uncomment and modify as needed.
+    # See README.md for full documentation.
     command:
+      # -------------------------------------------------------------------------
+      # Web Server Configuration
+      # -------------------------------------------------------------------------
+      # Address to listen on (default: "[::]:9458")
       - "--web.listen-address=[::]:9458"
+      # Path under which to expose metrics (default: "/metrics")
       - "--web.telemetry-path=/metrics"
-      - "--collector.interface-features.enable=true"
-      # Uncomment and customize as needed:
+
+      # -------------------------------------------------------------------------
+      # Collector Configuration
+      # -------------------------------------------------------------------------
+      # Collect interface features (default: true)
+      # WARNING: May result in huge amounts of timeseries on many-port switches.
+      # Consider setting to false on switches with many ports.
+      # - "--collector.interface-features.enable=true"
+
+      # Report optical powers in dBm instead of mW (default: false -> mW)
+      # Note: dBm conversion may result in -Inf for 0 values which can cause
+      # issues with software not fully implementing IEEE754 floating point.
       # - "--collector.optical-power-in-dbm=true"
-      # - "--exclude.interfaces=lo,docker0"
+
+      # -------------------------------------------------------------------------
+      # Interface Filtering - Exclude
+      # -------------------------------------------------------------------------
+      # Comma separated list of interfaces to exclude
+      # - "--exclude.interfaces=lo,docker0,veth0"
+
+      # Regex pattern of interfaces to exclude
       # - "--exclude.interfaces-regex=^(docker|veth|br-).*"
-      # - "--include.interfaces=eth0,eth1"
+
+      # Don't report on interfaces that are administratively DOWN
       # - "--exclude.interfaces-down=true"
 
-    # Health check
-    # Note: distroless has no shell, wget, or curl
-    # Using /dev/tcp requires bash which isn't available
-    # For distroless, we rely on container runtime health or external monitoring
-    # If using an alpine-based image instead, uncomment:
-    # healthcheck:
-    #   test: ["CMD", "wget", "-q", "--spider", "http://localhost:9458/metrics"]
-    #   interval: 30s
-    #   timeout: 10s
-    #   retries: 3
-    #   start_period: 10s
+      # -------------------------------------------------------------------------
+      # Interface Filtering - Include
+      # -------------------------------------------------------------------------
+      # Comma separated list of interfaces to include (only these will be monitored)
+      # - "--include.interfaces=eth0,eth1,swp1,swp2"
 
-    # Resource limits (optional)
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 128M
-        reservations:
-          cpus: '0.1'
-          memory: 32M
-
-    # Logging configuration
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"
+      # Regex pattern of interfaces to include
+      # - "--include.interfaces-regex=^(eth|swp|enp).*"

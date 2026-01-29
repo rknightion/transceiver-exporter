@@ -42,9 +42,10 @@ RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} \
 # ------------------------------------------------------------------------------
 # Stage 2: Production image
 # Uses distroless for minimal attack surface (~2MB base)
-# Includes: CA certs, tzdata, nonroot user, /tmp
+# Includes: CA certs, tzdata, /tmp
+# Note: Runs as root (required for ethtool module EEPROM access)
 # ------------------------------------------------------------------------------
-FROM gcr.io/distroless/static-debian13:nonroot
+FROM gcr.io/distroless/static-debian13
 
 # OCI image labels
 LABEL org.opencontainers.image.title="transceiver-exporter"
@@ -57,9 +58,6 @@ COPY --from=builder /transceiver-exporter /transceiver-exporter
 
 # Expose the metrics port
 EXPOSE 9458
-
-# Run as nonroot user (UID 65532)
-USER nonroot:nonroot
 
 # Entrypoint
 ENTRYPOINT ["/transceiver-exporter"]

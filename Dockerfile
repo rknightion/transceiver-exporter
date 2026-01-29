@@ -44,7 +44,7 @@ RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} \
 # Uses distroless for minimal attack surface (~2MB base)
 # Includes: CA certs, tzdata, nonroot user, /tmp
 # ------------------------------------------------------------------------------
-FROM gcr.io/distroless/static-debian12:nonroot
+FROM gcr.io/distroless/static-debian13:nonroot
 
 # OCI image labels
 LABEL org.opencontainers.image.title="transceiver-exporter"

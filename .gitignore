@@ -52,3 +52,6 @@ tags
 
 *.log
 transceiver-exporter
+
+# GoReleaser build output
+/dist/

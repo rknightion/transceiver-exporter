@@ -1,0 +1,49 @@
+# GoReleaser config for transceiver-exporter binaries. Images are built separately by
+# the shared container-publish reusable; this only produces the cross-compiled Linux
+# binaries + checksums + archive SBOMs, uploaded to the release-please GitHub Release.
+# transceiver-exporter is a Linux-only tool (reads transceiver EEPROM via ethtool), so
+# only linux targets are built (matching the prior wangyoucao577 matrix: 386/amd64/arm64/arm).
+version: 2
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+    goarch:
+      - "386"
+      - amd64
+      - arm64
+      - arm
+    ldflags:
+      - -s -w
+      - -X main.version={{ .Version }}
+
+archives:
+  - formats: [tar.gz]
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+    files:
+      - LICENSE.md
+      - README.md
+
+checksum:
+  name_template: "checksums.txt"
+  algorithm: sha256
+
+sboms:
+  - artifacts: archive
+
+snapshot:
+  version_template: "{{ incpatch .Version }}-next"
+
+changelog:
+  disable: true

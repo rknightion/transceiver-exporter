@@ -54,6 +54,23 @@ jobs:
     with:
       release_tag: ${{ needs.release-please.outputs.tag_name }}
 
+  # Binaries via the shared GoReleaser reusable (Linux 386/amd64/arm64/arm + checksums +
+  # archive SBOMs, uploaded to the release-please release). Replaces the wangyoucao577
+  # release.yaml. pre-cmd installs the pinned syft for the archive SBOMs.
+  binaries:
+    needs: release-please
+    if: needs.release-please.outputs.release_created == 'true'
+    permissions:
+      contents: write # upload release assets
+      id-token: write
+      packages: write
+    uses: rknightion/.github/.github/workflows/binaries.yml@9eaba495bc5f41c780ea4508e52ea1a20330c04f # v1.2.0
+    with:
+      release-tag: ${{ needs.release-please.outputs.tag_name }}
+      go-version: "1.26"
+      goreleaser-args: "release --clean --skip=docker"
+      pre-cmd: "go install github.com/anchore/syft/cmd/syft@v1.18.1"
+
   # Edge build on every non-release push to main: publishes the :main multi-arch image
   # via the shared reusable (replaces the removed docker-publish.yaml main push).
   # release_created gates this vs publish, so they never both run on one push.

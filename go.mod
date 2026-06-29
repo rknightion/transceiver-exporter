@@ -1,4 +1,4 @@
-module github.com/wobcom/transceiver-exporter
+module github.com/rknightion/transceiver-exporter
 
 go 1.14
 

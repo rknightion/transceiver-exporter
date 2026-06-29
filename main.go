@@ -11,7 +11,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	log "github.com/sirupsen/logrus"
-	transceivercollector "github.com/wobcom/transceiver-exporter/transceiver-collector"
+	transceivercollector "github.com/rknightion/transceiver-exporter/transceiver-collector"
 )
 
 var version = "1.5.1"

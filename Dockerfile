@@ -50,7 +50,7 @@ FROM gcr.io/distroless/static-debian13
 # OCI image labels
 LABEL org.opencontainers.image.title="transceiver-exporter"
 LABEL org.opencontainers.image.description="Prometheus exporter for pluggable transceivers on Linux"
-LABEL org.opencontainers.image.source="https://github.com/wobcom/transceiver-exporter"
+LABEL org.opencontainers.image.source="https://github.com/rknightion/transceiver-exporter"
 LABEL org.opencontainers.image.licenses="AGPL-3.0"
 
 # Copy the binary from builder

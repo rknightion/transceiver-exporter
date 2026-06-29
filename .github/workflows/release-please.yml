@@ -69,6 +69,7 @@ jobs:
       release-tag: ${{ needs.release-please.outputs.tag_name }}
       go-version: "1.26"
       goreleaser-args: "release --clean --skip=docker"
+      install-cosign: true # keyless-sign the checksums (see .goreleaser.yaml signs:)
       pre-cmd: "go install github.com/anchore/syft/cmd/syft@v1.18.1"
 
   # Edge build on every non-release push to main: publishes the :main multi-arch image

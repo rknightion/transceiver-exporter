@@ -42,6 +42,19 @@ checksum:
 sboms:
   - artifacts: archive
 
+# Keyless cosign signature over the checksums file (GitHub OIDC). Requires id-token: write
+# and cosign on PATH (the binaries reusable's install-cosign: true).
+signs:
+  - cmd: cosign
+    signature: "${artifact}.sigstore.json"
+    args:
+      - sign-blob
+      - "--bundle=${signature}"
+      - "${artifact}"
+      - "--yes"
+    artifacts: checksum
+    output: true
+
 snapshot:
   version_template: "{{ incpatch .Version }}-next"
 

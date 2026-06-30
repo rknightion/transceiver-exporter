@@ -10,8 +10,8 @@ import (
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	log "github.com/sirupsen/logrus"
 	transceivercollector "github.com/rknightion/transceiver-exporter/transceiver-collector"
+	log "github.com/sirupsen/logrus"
 )
 
 var version = "1.5.1"
@@ -41,7 +41,7 @@ func main() {
 	}
 
 	if err := compileRegexFlags(); err != nil {
-		log.Fatalf(err.Error())
+		log.Fatal(err)
 	}
 
 	startServer()

@@ -1,5 +1,6 @@
 # Prometheus transceiver exporter
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/rknightion/transceiver-exporter/badge)](https://scorecard.dev/viewer/?uri=github.com/rknightion/transceiver-exporter)
 
 > **Thank you to the original [wobcom](https://github.com/wobcom) authors** who created
 > transceiver-exporter and the underlying [go-ethtool](https://github.com/wobcom/go-ethtool)

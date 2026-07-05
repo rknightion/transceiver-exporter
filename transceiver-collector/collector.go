@@ -13,7 +13,7 @@ import (
 	"github.com/wobcom/go-ethtool/eeprom"
 )
 
-const prefix = "transceiver_"
+const prefix = "transceiver_exporter_"
 
 var (
 	driverDesc              *prometheus.Desc
@@ -174,38 +174,41 @@ func init() {
 	laserBiasHighWarningThresholdDesc = prometheus.NewDesc(prefix+"laser_bias_current_high_warning_threshold_milliamperes", "High warning threshold for the laser bias current in milliamperes", laserLabels, nil)
 	laserBiasLowAlarmThresholdDesc = prometheus.NewDesc(prefix+"laser_bias_current_low_alarm_threshold_milliamperes", "Low alarm threshold for the laser bias current in milliamperes", laserLabels, nil)
 	laserBiasLowWarningThresholdDesc = prometheus.NewDesc(prefix+"laser_bias_current_low_warning_threshold_milliamperes", "Low warning threshold for the laser bias current in milliamperes", laserLabels, nil)
+
+	// Laser tx/rx power descriptors are built here (once) rather than in NewCollector.
+	// NewCollector runs on every scrape and can execute concurrently, so mutating these
+	// package globals per request was a data race. Both the milliwatt and dBm families are
+	// created unconditionally; Describe/Collect pick the right set from the powerUnitdBm flag.
+	laserTxPowerThresholdsSupportedDesc = prometheus.NewDesc(prefix+"laser_tx_power_supports_thresholds_bool", "1 if thresholds for the laser tx power are supported", laserLabels, nil)
+	laserRxPowerThresholdsSupportedDesc = prometheus.NewDesc(prefix+"laser_rx_power_supports_thresholds_bool", "1 if thresholds for the laser rx power are supported", laserLabels, nil)
+
+	laserTxPowerDescDbm = prometheus.NewDesc(prefix+"laser_tx_power_dbm", "Laser tx power in dBm", laserLabels, nil)
+	laserTxPowerHighAlarmThresholdDescDbm = prometheus.NewDesc(prefix+"laser_tx_power_high_alarm_threshold_dbm", "High alarm threshold for the laser tx power in dBm", laserLabels, nil)
+	laserTxPowerHighWarningThresholdDescDbm = prometheus.NewDesc(prefix+"laser_tx_power_high_warning_threshold_dbm", "High warning threshold for the laser tx power in dBm", laserLabels, nil)
+	laserTxPowerLowAlarmThresholdDescDbm = prometheus.NewDesc(prefix+"laser_tx_power_low_alarm_threshold_dbm", "Low alarm threshold for the laser tx power in dBm", laserLabels, nil)
+	laserTxPowerLowWarningThresholdDescDbm = prometheus.NewDesc(prefix+"laser_tx_power_low_warning_threshold_dbm", "Low warning threshold for the laser tx power in dBm", laserLabels, nil)
+
+	laserRxPowerDescDbm = prometheus.NewDesc(prefix+"laser_rx_power_dbm", "Laser rx power in dBm", laserLabels, nil)
+	laserRxPowerHighAlarmThresholdDescDbm = prometheus.NewDesc(prefix+"laser_rx_power_high_alarm_threshold_dbm", "High alarm threshold for the laser rx power in dBm", laserLabels, nil)
+	laserRxPowerHighWarningThresholdDescDbm = prometheus.NewDesc(prefix+"laser_rx_power_high_warning_threshold_dbm", "High warning threshold for the laser rx power in dBm", laserLabels, nil)
+	laserRxPowerLowAlarmThresholdDescDbm = prometheus.NewDesc(prefix+"laser_rx_power_low_alarm_threshold_dbm", "Low alarm threshold for the laser rx power in dBm", laserLabels, nil)
+	laserRxPowerLowWarningThresholdDescDbm = prometheus.NewDesc(prefix+"laser_rx_power_low_warning_threshold_dbm", "Low warning threshold for the laser rx power in dBm", laserLabels, nil)
+
+	laserTxPowerDescMw = prometheus.NewDesc(prefix+"laser_tx_power_milliwatts", "Laser tx power in milliwatts", laserLabels, nil)
+	laserTxPowerHighAlarmThresholdDescMw = prometheus.NewDesc(prefix+"laser_tx_power_high_alarm_threshold_milliwatts", "High alarm threshold for the laser tx power in milliwatts", laserLabels, nil)
+	laserTxPowerHighWarningThresholdDescMw = prometheus.NewDesc(prefix+"laser_tx_power_high_warning_threshold_milliwatts", "High warning threshold for the laser tx power in milliwatts", laserLabels, nil)
+	laserTxPowerLowAlarmThresholdDescMw = prometheus.NewDesc(prefix+"laser_tx_power_low_alarm_threshold_milliwatts", "Low alarm threshold for the laser tx power in milliwatts", laserLabels, nil)
+	laserTxPowerLowWarningThresholdDescMw = prometheus.NewDesc(prefix+"laser_tx_power_low_warning_threshold_milliwatts", "Low warning threshold for the laser tx power in milliwatts", laserLabels, nil)
+
+	laserRxPowerDescMw = prometheus.NewDesc(prefix+"laser_rx_power_milliwatts", "Laser rx power in milliwatts", laserLabels, nil)
+	laserRxPowerHighAlarmThresholdDescMw = prometheus.NewDesc(prefix+"laser_rx_power_high_alarm_threshold_milliwatts", "High alarm threshold for the laser rx power in milliwatts", laserLabels, nil)
+	laserRxPowerHighWarningThresholdDescMw = prometheus.NewDesc(prefix+"laser_rx_power_high_warning_threshold_milliwatts", "High warning threshold for the laser rx power in milliwatts", laserLabels, nil)
+	laserRxPowerLowAlarmThresholdDescMw = prometheus.NewDesc(prefix+"laser_rx_power_low_alarm_threshold_milliwatts", "Low alarm threshold for the laser rx power in milliwatts", laserLabels, nil)
+	laserRxPowerLowWarningThresholdDescMw = prometheus.NewDesc(prefix+"laser_rx_power_low_warning_threshold_milliwatts", "Low warning threshold for the laser rx power in milliwatts", laserLabels, nil)
 }
 
 // NewCollector initializes a new TransceiverCollector
 func NewCollector(excludeInterfaces []string, includeInterfaces []string, excludeInterfacesRegex, includeInterfacesRegex *regexp.Regexp, excludeInterfacesDown bool, collectInterfaceFeatures bool, powerUnitdBm bool) *TransceiverCollector {
-	laserTxPowerThresholdsSupportedDesc = prometheus.NewDesc(prefix+"laser_tx_power_supports_thresholds_bool", "1 if thresholds for the laser tx power are supported", laserLabels, nil)
-	laserRxPowerThresholdsSupportedDesc = prometheus.NewDesc(prefix+"laser_rx_power_supports_thresholds_bool", "1 if thresholds for the laser rx power are supported", laserLabels, nil)
-	if powerUnitdBm {
-		laserTxPowerDescDbm = prometheus.NewDesc(prefix+"laser_tx_power_dbm", "Laser tx power in dBm", laserLabels, nil)
-		laserTxPowerHighAlarmThresholdDescDbm = prometheus.NewDesc(prefix+"laser_tx_power_high_alarm_threshold_dbm", "High alarm threshold for the laser tx power in dBm", laserLabels, nil)
-		laserTxPowerHighWarningThresholdDescDbm = prometheus.NewDesc(prefix+"laser_tx_power_high_warning_threshold_dbm", "High warning threshold for the laser tx power in dBm", laserLabels, nil)
-		laserTxPowerLowAlarmThresholdDescDbm = prometheus.NewDesc(prefix+"laser_tx_power_low_alarm_threshold_dbm", "Low alarm threshold for the laser tx power in dBm", laserLabels, nil)
-		laserTxPowerLowWarningThresholdDescDbm = prometheus.NewDesc(prefix+"laser_tx_power_low_warning_threshold_dbm", "Low warning threshold for the laser tx power in dBm", laserLabels, nil)
-
-		laserRxPowerDescDbm = prometheus.NewDesc(prefix+"laser_rx_power_dbm", "Laser rx power in dBm", laserLabels, nil)
-		laserRxPowerHighAlarmThresholdDescDbm = prometheus.NewDesc(prefix+"laser_rx_power_high_alarm_threshold_dbm", "High alarm threshold for the laser rx power in dBm", laserLabels, nil)
-		laserRxPowerHighWarningThresholdDescDbm = prometheus.NewDesc(prefix+"laser_rx_power_high_warning_threshold_dbm", "High warning threshold for the laser rx power in dBm", laserLabels, nil)
-		laserRxPowerLowAlarmThresholdDescDbm = prometheus.NewDesc(prefix+"laser_rx_power_low_alarm_threshold_dbm", "Low alarm threshold for the laser rx power in dBm", laserLabels, nil)
-		laserRxPowerLowWarningThresholdDescDbm = prometheus.NewDesc(prefix+"laser_rx_power_low_warning_threshold_dbm", "Low warning threshold for the laser rx power in dBm", laserLabels, nil)
-	} else {
-		laserTxPowerDescMw = prometheus.NewDesc(prefix+"laser_tx_power_milliwatts", "Laser tx power in milliwatts", laserLabels, nil)
-		laserTxPowerHighAlarmThresholdDescMw = prometheus.NewDesc(prefix+"laser_tx_power_high_alarm_threshold_milliwatts", "High alarm threshold for the laser tx power in milliwatts", laserLabels, nil)
-		laserTxPowerHighWarningThresholdDescMw = prometheus.NewDesc(prefix+"laser_tx_power_high_warning_threshold_milliwatts", "High warning threshold for the laser tx power in milliwatts", laserLabels, nil)
-		laserTxPowerLowAlarmThresholdDescMw = prometheus.NewDesc(prefix+"laser_tx_power_low_alarm_threshold_milliwatts", "Low alarm threshold for the laser tx power in milliwatts", laserLabels, nil)
-		laserTxPowerLowWarningThresholdDescMw = prometheus.NewDesc(prefix+"laser_tx_power_low_warning_threshold_milliwatts", "Low warning threshold for the laser tx power in milliwatts", laserLabels, nil)
-
-		laserRxPowerDescMw = prometheus.NewDesc(prefix+"laser_rx_power_milliwatts", "Laser rx power in milliwatts", laserLabels, nil)
-		laserRxPowerHighAlarmThresholdDescMw = prometheus.NewDesc(prefix+"laser_rx_power_high_alarm_threshold_milliwatts", "High alarm threshold for the laser rx power in milliwatts", laserLabels, nil)
-		laserRxPowerHighWarningThresholdDescMw = prometheus.NewDesc(prefix+"laser_rx_power_high_warning_threshold_milliwatts", "High warning threshold for the laser rx power in milliwatts", laserLabels, nil)
-		laserRxPowerLowAlarmThresholdDescMw = prometheus.NewDesc(prefix+"laser_rx_power_low_alarm_threshold_milliwatts", "Low alarm threshold for the laser rx power in milliwatts", laserLabels, nil)
-		laserRxPowerLowWarningThresholdDescMw = prometheus.NewDesc(prefix+"laser_rx_power_low_warning_threshold_milliwatts", "Low warning threshold for the laser rx power in milliwatts", laserLabels, nil)
-	}
-
 	return &TransceiverCollector{
 		excludeInterfaces:        excludeInterfaces,
 		includeInterfaces:        includeInterfaces,

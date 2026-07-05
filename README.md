@@ -10,6 +10,41 @@
 This tool provides diagnostics for pluggable transceivers (SFP, SFP+, QSFP, etc.) by leveraging the [ethtool library](https://github.com/wobcom/go-ethtool).
 You can use this tool with [CumulusLinux](https://cumulusnetworks.com/products/cumulus-linux/).
 
+## Installation
+
+### Docker (recommended)
+
+Multi-arch images (`linux/amd64`, `linux/arm64`) are published to GHCR on every release:
+
+```bash
+docker run -d \
+  --name transceiver-exporter \
+  --network host \
+  --cap-drop ALL \
+  --cap-add NET_ADMIN \
+  --read-only \
+  ghcr.io/rknightion/transceiver-exporter:latest
+```
+
+Host network mode is required: the exporter enumerates NICs via `net.Interfaces()`, which in bridge mode would only see container-local interfaces. `CAP_NET_ADMIN` is required for the ethtool `SIOCETHTOOL` ioctls used to read transceiver EEPROM.
+
+### Docker Compose
+
+A ready-to-use [`compose.yml`](./compose.yml) is included with every command-line option documented inline:
+
+```bash
+docker compose up -d
+```
+
+### From source
+
+```bash
+go build -o transceiver-exporter .
+./transceiver-exporter -web.listen-address="[::]:9458"
+```
+
+Metrics are then available at `http://<host>:9458/metrics`.
+
 ## Command line options
 You might want to set `-collector.interface-features.enable` to false, because it may result in huge amounts of timeseries (especially on many port switches).
 
@@ -39,9 +74,12 @@ Usage of ./transceiver-exporter:
 
 ## Exported metrics
 
-Note: Transmit / Receive power (and thresholds) are exported as milliwatts just as they are read from the module. If you wish to have decibel milliwatts, you'll have to do the conversion `10 * math.Log10(value_in_milliwatts)`. Please also note that, this might result `-Inf` for a value of 0 which might cause trouble with software / standards (e.g. JSON) not fully implementing the IEE754 floating point standard.
-Starting in version 1.1.0 we added the runtime option `-collector.optical-power-in-dbm` to enable conversion to dBm in the exporter.
+All metrics are prefixed with `transceiver_exporter_`.
 
+Note: Transmit / Receive power (and thresholds) are exported as milliwatts just as they are read from the module. If you wish to have decibel milliwatts, you'll have to do the conversion `10 * math.Log10(value_in_milliwatts)`. Please also note that, this might result `-Inf` for a value of 0 which might cause trouble with software / standards (e.g. JSON) not fully implementing the IEE754 floating point standard.
+Starting in version 1.1.0 we added the runtime option `-collector.optical-power-in-dbm` to enable conversion to dBm in the exporter. When enabled, the `*_milliwatts` power/threshold metrics below are **replaced** by their `*_dbm` counterparts (`transceiver_exporter_laser_tx_power_dbm`, `transceiver_exporter_laser_rx_power_dbm`, and the corresponding `*_high_alarm_threshold_dbm` / `*_high_warning_threshold_dbm` / `*_low_alarm_threshold_dbm` / `*_low_warning_threshold_dbm` variants).
+
+* `transceiver_exporter_bus_info`: Bus information as reported by the interface driver
 * `transceiver_exporter_date_code_unix_time`: Vendor supplied date code exported as unix epoch
 * `transceiver_exporter_driver_name_info`: Driver name
 * `transceiver_exporter_driver_version_info`: Driver version
@@ -57,6 +95,7 @@ Starting in version 1.1.0 we added the runtime option `-collector.optical-power-
 * `transceiver_exporter_laser_bias_current_low_warning_threshold_milliamperes`: Low warning threshold for the laser bias current in milliamperes
 * `transceiver_exporter_laser_bias_current_milliamperes`: Laser bias current in in milliamperes
 * `transceiver_exporter_laser_bias_current_supports_thresholds_bool`: 1 if thresholds for the laser bias current are supported
+* `transceiver_exporter_laser_supports_monitoring_bool`: 1 if the laser supports real time monitoring
 * `transceiver_exporter_laser_rx_power_high_alarm_threshold_milliwatts`: High alarm threshold for the laser rx power in milliwatts
 * `transceiver_exporter_laser_rx_power_high_warning_threshold_milliwatts`: High warning threshold for the laser rx power in milliwatts
 * `transceiver_exporter_laser_rx_power_low_alarm_threshold_milliwatts`: Low alarm threshold for the laser rx power in milliwatts
@@ -94,9 +133,10 @@ Starting in version 1.1.0 we added the runtime option `-collector.optical-power-
 * `transceiver_exporter_wavelength_nanometer`: Wavelength in nanometers
 
 ## Maintainer
-* @vidister
+* @rknightion (this continuation)
 
-## Authors
+## Original authors
+The original transceiver-exporter and the underlying [go-ethtool](https://github.com/wobcom/go-ethtool) library were created at [wobcom](https://github.com/wobcom):
 * @fluepke
 * @BarbarossaTM
 * @vidister

@@ -14,7 +14,10 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-var version = "1.5.1"
+// version is the fallback for un-injected builds. Official release and Docker
+// builds override it via -ldflags "-X main.version=...". Keep it as "dev" so a
+// plain `go build`/`go install` never reports a stale release number.
+var version = "dev"
 
 var (
 	showVersion              = flag.Bool("version", false, "Print version and exit")
@@ -50,7 +53,8 @@ func main() {
 func printVersion() {
 	fmt.Println("transceiver-exporter")
 	fmt.Printf("Version: %s\n", version)
-	fmt.Println("Author(s): @fluepke, @BarbarossaTM, @vidister")
+	fmt.Println("Maintainer: @rknightion")
+	fmt.Println("Original authors: @fluepke, @BarbarossaTM, @vidister (wobcom)")
 	fmt.Println("Metrics Exporter for pluggable transceivers on Linux based hosts / switches")
 }
 

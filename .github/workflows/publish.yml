@@ -6,7 +6,8 @@
 #
 # NOTE: linux/arm/v7 is NOT built — the shared reusable only targets linux/amd64 and
 # linux/arm64 (native runners, no QEMU). The legacy docker-publish.yaml built arm/v7
-# via QEMU; that platform is dropped. See main-thread task: confirm arm/v7 drop is OK.
+# via QEMU; that platform is intentionally dropped, and release binaries match
+# (amd64 + arm64 only in .goreleaser.yaml).
 name: publish
 
 on:

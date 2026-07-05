@@ -29,11 +29,10 @@ issues.)
 
 ## Open decisions / follow-ups
 
-- [ ] **`linux/arm/v7` image support.** `publish.yml` builds only `amd64` +
-  `arm64` images (the shared reusable dropped QEMU arm/v7), while
-  `.goreleaser.yaml` still ships `arm` and `386` release *binaries*. Decide
-  whether arm/v7 container images need to come back before v1, and note the drop
-  in the release notes either way.
+- [x] **Architecture support.** Standardised on `linux/amd64` + `linux/arm64`
+  for both container images and release binaries. `386` and `arm`/`armv7` were
+  dropped from `.goreleaser.yaml` to match the container-publish matrix. This is
+  a breaking change for anyone consuming those binaries/images.
 - [ ] **Enable GitHub Issues** and close the redundant Mend Bolt onboarding
   PR (#1); decide on the Renovate onboarding PR (#2).
 - [ ] **Tag v1.0.0** once the above are resolved (release-please will pick up the

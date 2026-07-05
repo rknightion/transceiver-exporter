@@ -2,7 +2,8 @@
 # the shared container-publish reusable; this only produces the cross-compiled Linux
 # binaries + checksums + archive SBOMs, uploaded to the release-please GitHub Release.
 # transceiver-exporter is a Linux-only tool (reads transceiver EEPROM via ethtool), so
-# only linux targets are built (matching the prior wangyoucao577 matrix: 386/amd64/arm64/arm).
+# only linux targets are built. Only amd64 and arm64 are shipped — 386 and arm/v7 were
+# dropped to match the container-publish matrix (which is amd64 + arm64 native, no QEMU).
 version: 2
 
 before:
@@ -15,10 +16,8 @@ builds:
     goos:
       - linux
     goarch:
-      - "386"
       - amd64
       - arm64
-      - arm
     ldflags:
       - -s -w
       - -X main.version={{ .Version }}
@@ -29,7 +28,6 @@ archives:
       {{ .ProjectName }}_
       {{- title .Os }}_
       {{- if eq .Arch "amd64" }}x86_64
-      {{- else if eq .Arch "386" }}i386
       {{- else }}{{ .Arch }}{{ end }}
     files:
       - LICENSE.md

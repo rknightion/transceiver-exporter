@@ -1,5 +1,29 @@
 # Changelog
 
+## [2.0.0](https://github.com/rknightion/transceiver-exporter/compare/v1.6.0...v2.0.0) (2026-07-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* This release renames every exported metric from the `transceiver_` prefix to `transceiver_exporter_`; dashboards and alerts must be updated. Additionally, `linux/386` and `linux/arm`/`armv7` release binaries and container images are no longer produced — only `linux/amd64` and `linux/arm64` are supported.
+
+### Bug Fixes
+
+* **collector:** use transceiver_exporter_ metric prefix and build descriptors once ([36800a4](https://github.com/rknightion/transceiver-exporter/commit/36800a45fc0fff7655f3cd597c205775cf4931bc))
+* default version to "dev" instead of stale release string ([9790544](https://github.com/rknightion/transceiver-exporter/commit/9790544067d73a094194acfc0e54b8f264b4f17d))
+
+
+### Documentation
+
+* add community-health files and v1 roadmap ([3854a50](https://github.com/rknightion/transceiver-exporter/commit/3854a50f52ab4dbe7f48450023a781f85a1999ca))
+* document all metrics, add install/Docker guide, refresh attribution ([bbf7ed3](https://github.com/rknightion/transceiver-exporter/commit/bbf7ed3f70068a9512078f5fe84136ad5a69ab44))
+
+
+### Build & CI
+
+* **release:** repin shared binaries workflow, grant attestations: write ([e7037d5](https://github.com/rknightion/transceiver-exporter/commit/e7037d5c552d14e7c605f350e2d956afea90859d))
+* ship only linux/amd64 and linux/arm64 ([2b50c83](https://github.com/rknightion/transceiver-exporter/commit/2b50c83f3095de7ad142b1231ff6906c69003658))
+
 ## [1.6.0](https://github.com/rknightion/transceiver-exporter/compare/v1.5.1...v1.6.0) (2026-07-03)
 
 

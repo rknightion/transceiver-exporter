@@ -23,6 +23,26 @@ no transceiver at all) simply yields no EEPROM metrics for that interface — se
 The source, releases and issue tracker live on
 **[GitHub](https://github.com/rknightion/transceiver-exporter)**.
 
+## Quickstart
+
+Linux only — the exporter reads transceiver EEPROM through the kernel's `ethtool`
+ioctls:
+
+```bash
+docker run -d \
+  --name transceiver-exporter \
+  --network host \
+  --cap-drop ALL \
+  --cap-add NET_ADMIN \
+  --read-only \
+  ghcr.io/rknightion/transceiver-exporter:latest
+```
+
+Metrics are then at `http://localhost:9458/metrics`. `--network host` and
+`--cap-add NET_ADMIN` are both load-bearing: in bridge mode the exporter only
+sees container-local interfaces, and the `SIOCETHTOOL` ioctl needs the
+capability.
+
 ## Start here
 
 <div class="grid cards" markdown>

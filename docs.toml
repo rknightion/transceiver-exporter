@@ -5,7 +5,7 @@
 [site]
 name = "transceiver-exporter"
 description = "Prometheus exporter for pluggable optical transceiver diagnostics (SFP, SFP+, QSFP) read from Linux NICs over ethtool, including digital optical monitoring."
-author = "Rob Knighton"
+author = "Rob Knight"
 keywords = [
     "transceiver exporter",
     "sfp",

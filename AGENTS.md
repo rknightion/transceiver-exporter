@@ -38,9 +38,10 @@ icons, the social card, `docs/fonts/`). Do not create them locally to "fix" a mi
 
 ## Task tracking
 
-The board is the queue: `backlog task list --plain`. `ROADMAP.md` is historical — its completed
-items are `Done` tasks `TXE-0001`…`TXE-0007`, and its two unchecked items were stale when this
-tracker was adopted on 2026-08-14.
+The board is the queue: `backlog task list --plain`. There is no second queue — `ROADMAP.md` stood
+in for one while Issues were disabled, and was deleted on 2026-08-14 when this tracker replaced it.
+Its completed items are `Done` tasks `TXE-0001`…`TXE-0007`; its two unchecked items were already
+stale. Do not reintroduce a checklist file alongside the board.
 
 Two campaign documents, both loaded on demand with `backlog doc view` (`backlog doc list --plain`):
 

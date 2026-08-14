@@ -77,9 +77,5 @@ docs/fonts/
 docs/superpowers/
 
 # Only the shared Claude Code config is tracked: settings.json and hooks/, so the Backlog.md guard
-# (bare --notes/--plan replaces a section silently; hand-edited task markdown loses one at exit 0)
-# applies to anyone working in this repo. Everything else under .claude/ is per-machine state —
 # worktrees, scheduler locks, settings.local.json.
-.claude/*
-!.claude/settings.json
-!.claude/hooks/
+.claude/

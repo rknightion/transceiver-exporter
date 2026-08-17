@@ -88,7 +88,7 @@ The three genuinely disjoint lanes here:
   Go lane owns `docs/metrics.md` and the docs lane does not touch it.
 - **CI / supply chain** — `.github/workflows/`, `Dockerfile`, `.goreleaser.yaml`, `renovate.json`.
 
-**Do not create the hub-injected paths.** The published site is built by the `rknightion/m7kni-net-site`
+**Do not create the hub-injected paths.** The published site is built by the `m7kni/m7kni-net-site`
 hub from `docs/` plus `docs.toml`; the hub generates `zensical.toml` and copies in
 `docs/overrides/`, `docs/stylesheets/brand.css`, the project icons, the social card and `docs/fonts/`.
 All of those are gitignored on purpose. A lane that "fixes the missing theme files" by creating them

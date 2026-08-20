@@ -1,5 +1,53 @@
 # Changelog
 
+## [2.0.0](https://github.com/rknightion/transceiver-exporter/compare/v1.6.0...v2.0.0) (2026-08-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* This release renames every exported metric from the `transceiver_` prefix to `transceiver_exporter_`; dashboards and alerts must be updated. Additionally, `linux/386` and `linux/arm`/`armv7` release binaries and container images are no longer produced — only `linux/amd64` and `linux/arm64` are supported.
+
+### Features
+
+* mint release-please token from the OpenBao broker ([f8138f7](https://github.com/rknightion/transceiver-exporter/commit/f8138f743d88589e4513be150a64f7b66da9be69))
+
+
+### Bug Fixes
+
+* author is Rob Knight, not Rob Knighton ([67d5b69](https://github.com/rknightion/transceiver-exporter/commit/67d5b69d63b2854cfcf3a307b3d792dcff9a7e8d))
+* **collector:** use transceiver_exporter_ metric prefix and build descriptors once ([36800a4](https://github.com/rknightion/transceiver-exporter/commit/36800a45fc0fff7655f3cd597c205775cf4931bc))
+* default version to "dev" instead of stale release string ([9790544](https://github.com/rknightion/transceiver-exporter/commit/9790544067d73a094194acfc0e54b8f264b4f17d))
+* **deps:** update module github.com/prometheus/client_golang to v1.24.1 ([#8](https://github.com/rknightion/transceiver-exporter/issues/8)) ([758f6b5](https://github.com/rknightion/transceiver-exporter/commit/758f6b5514bf542babd04e60acfb9473fb47b0f5))
+* **deps:** update module github.com/sirupsen/logrus to v1.10.0 ([#11](https://github.com/rknightion/transceiver-exporter/issues/11)) ([77227fb](https://github.com/rknightion/transceiver-exporter/commit/77227fb6df2ee40b2b895fefa5eda58edeb1c006))
+* **deps:** update module github.com/sirupsen/logrus to v1.10.1 ([#12](https://github.com/rknightion/transceiver-exporter/issues/12)) ([ec5801d](https://github.com/rknightion/transceiver-exporter/commit/ec5801dfc82abc63da817cef8fed4c4a15939a43))
+
+
+### Documentation
+
+* add community-health files and v1 roadmap ([3854a50](https://github.com/rknightion/transceiver-exporter/commit/3854a50f52ab4dbe7f48450023a781f85a1999ca))
+* document all metrics, add install/Docker guide, refresh attribution ([bbf7ed3](https://github.com/rknightion/transceiver-exporter/commit/bbf7ed3f70068a9512078f5fe84136ad5a69ab44))
+* publish a documentation site and join the m7kni.io fleet ([25e26df](https://github.com/rknightion/transceiver-exporter/commit/25e26df70db3fe685389f2b71adc07d6a7bd83fd))
+* put a copy-paste quickstart on the landing page ([c527f66](https://github.com/rknightion/transceiver-exporter/commit/c527f660bee9a8e884a8859704d001ccdc077cbf))
+* re-import fan-out protocol (context-cost rules) ([0962df7](https://github.com/rknightion/transceiver-exporter/commit/0962df771a19d958c176b2b8233ecd333b450b2b))
+* re-render the fan-out protocol from agent-docs ([6a96261](https://github.com/rknightion/transceiver-exporter/commit/6a96261292cbc563742660dbf374606fba5d5466))
+* re-render the fan-out protocol from agent-docs 711db6c ([6a29d16](https://github.com/rknightion/transceiver-exporter/commit/6a29d16bce61d706d13cd666a2eb824f8fb554f1))
+* re-render the fan-out protocol from agent-docs b0d76d8 ([c9958a5](https://github.com/rknightion/transceiver-exporter/commit/c9958a5911d89741fdab106cab3e1d7f63853ec1))
+* **readme:** lead with what the project is ([508017f](https://github.com/rknightion/transceiver-exporter/commit/508017fb86f1c87525ac047f982ba5b8d780efee))
+* repoint moved repo references after the org consolidation ([060ed20](https://github.com/rknightion/transceiver-exporter/commit/060ed20713f7139830f80298fe4c523cba6ea8b5))
+* **tracker:** align canonical fan-out protocol ([b571e5e](https://github.com/rknightion/transceiver-exporter/commit/b571e5ea9534c3e65ee3215366d0f897bfef490d))
+* **tracker:** correct the canonical owner in the rendered header ([b209dfd](https://github.com/rknightion/transceiver-exporter/commit/b209dfd92630c8d0b8403be6f1354f76467ebbd1))
+* **tracker:** re-import the fan-out protocol from canonical ([6574322](https://github.com/rknightion/transceiver-exporter/commit/65743225a5da262349a1aac454bc22936fb481bf))
+* **tracker:** render agent documents from the canonical source ([52d93a6](https://github.com/rknightion/transceiver-exporter/commit/52d93a611151932adbc88d62861d22b5d495c2e4))
+
+
+### Build & CI
+
+* add auto-rc, arm-automerge and ghcr-cleanup ([1b1bd42](https://github.com/rknightion/transceiver-exporter/commit/1b1bd4239b3f1969bef949bb6ccddf765c7706e6))
+* docs-sync and grafana-sync targets moved to the m7kni org ([a5c6e9e](https://github.com/rknightion/transceiver-exporter/commit/a5c6e9eb90ee982591d43509b1529ecd6d6268f9))
+* **release:** repin shared binaries workflow, grant attestations: write ([e7037d5](https://github.com/rknightion/transceiver-exporter/commit/e7037d5c552d14e7c605f350e2d956afea90859d))
+* repin the release-automation reusables to v1.8.0 ([408b40f](https://github.com/rknightion/transceiver-exporter/commit/408b40f0de99ff7cc7afe512c8520570a043841f))
+* ship only linux/amd64 and linux/arm64 ([2b50c83](https://github.com/rknightion/transceiver-exporter/commit/2b50c83f3095de7ad142b1231ff6906c69003658))
+
 ## [1.6.0](https://github.com/rknightion/transceiver-exporter/compare/v1.5.1...v1.6.0) (2026-07-03)
 
 

@@ -1,10 +1,10 @@
 ---
 id: TXE-0008
 title: Upgrade Go toolchain to 1.27
-status: In Progress
+status: Done
 assignee: []
 created_date: '2026-08-23 19:06'
-updated_date: '2026-08-23 19:49'
+updated_date: '2026-08-23 20:37'
 labels: []
 dependencies: []
 ordinal: 8000
@@ -41,4 +41,12 @@ Adopt Go 1.27 consistently across the application, nested modules, build images,
 
 <!-- SECTION:NOTES:BEGIN -->
 Local Go 1.27.0 evidence: go build ./..., go vet ./..., go test -race ./..., and golangci-lint run all passed with 0 lint issues. Final diff check passed. CodeRabbit was skipped because the change is declarative toolchain, CI, container, and documentation configuration only.
+
+Exact-head hosted evidence: GitHub Actions run 32662554208 passed at 2d6f5fcd972a185f0438be54517df0a955453750.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Upgraded the active Go application surfaces to Go 1.27 and validated the change locally and in exact-head hosted CI run 32662554208 at 2d6f5fcd972a185f0438be54517df0a955453750.
+<!-- SECTION:FINAL_SUMMARY:END -->

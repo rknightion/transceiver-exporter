@@ -62,7 +62,7 @@ Verify the download against `checksums.txt` and its cosign bundle
 
 ## From source
 
-Requires a Go toolchain matching `go.mod` (currently Go 1.26):
+Requires a Go toolchain matching `go.mod` (currently Go 1.27):
 
 ```bash
 git clone https://github.com/rknightion/transceiver-exporter.git

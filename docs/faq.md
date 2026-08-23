@@ -1,6 +1,6 @@
 ---
 title: FAQ
-description: Frequently asked questions about transceiver-exporter.
+description: Answers about supported NIC drivers, SFP and QSFP modules, permissions, collection behavior, and Prometheus metrics.
 ---
 
 # FAQ

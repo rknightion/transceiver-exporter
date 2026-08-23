@@ -1,6 +1,6 @@
 ---
 title: Changelog
-description: Release history for transceiver-exporter
+description: Review transceiver-exporter releases, optical module support, Prometheus metric changes, fixes, and dependency updates.
 ---
 
 # Changelog

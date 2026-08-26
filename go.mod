@@ -5,7 +5,7 @@ go 1.27.0
 require (
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.24.1
-	github.com/sirupsen/logrus v1.10.1
+	github.com/sirupsen/logrus v1.10.2
 	github.com/wobcom/go-ethtool v1.0.1
 )
 

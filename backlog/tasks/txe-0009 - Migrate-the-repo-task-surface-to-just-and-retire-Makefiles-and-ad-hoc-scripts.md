@@ -1,10 +1,10 @@
 ---
 id: TXE-0009
 title: Migrate the repo task surface to just and retire Makefiles and ad-hoc scripts
-status: To Do
+status: Parked
 assignee: []
 created_date: '2026-08-28 19:27'
-updated_date: '2026-08-29 11:20'
+updated_date: '2026-08-29 14:50'
 labels:
   - 'wave:2-fleet'
 dependencies: []
@@ -357,6 +357,31 @@ Edit it directly with a text editor, not the `backlog` CLI.
 - [ ] #3 go test -race ./...
 - [ ] #4 golangci-lint run
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Inventory the current task surface, documented references, hooks, and existing 2otel CI legs.
+2. Create the justfile and small adjacent config needed for the ratified check/ci split: mandatory recipes, Go race testing, gosec linting, vulnerability, snapshot, and image recipes.
+3. Rewrite the CI workflow into the binding canonical 2otel job shape while preserving its coverage and shared-workflow behavior; update task-interface documentation and Definition of Done.
+4. Sweep retired names, run isolated local validation and review, commit/push the named files, prove CI at the final SHA, then finalize only criteria backed by evidence.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Implemented the justfile migration and canonical 2otel CI shape: race-enabled build/test, golangci-lint v2 with gosec, vulnerability scan, GoReleaser snapshot, and Docker image recipes. Added bounded HTTP server setup after gosec exposed the prior unbounded listener; focused timeout test added.
+
+Validation passed: just --fmt --check; just --dump --dump-format json; just check (fmt, vet, golangci-lint v2.13.2 plus gosec, race tests, govulncheck); filtered test recipe; GoReleaser snapshot; Docker image build; actionlint; zizmor on ci.yml. Snapshot initially showed GoReleaser v2.16.0 source incompatible with Go 1.27; v2.18.0 probe and snapshot passed, so the Renovate-managed justfile pin uses v2.18.0.
+
+Repository-wide zizmor remains unproven because unchanged auto-rc.yml has an existing dangerous workflow_run trigger finding; ci.yml alone has no findings. CodeRabbit review was attempted before commit but the organisation review service returned a five-minute rate limit before producing findings; no commit or push has occurred.
+
+Parked before any source commit or push because CodeRabbit returned an organisation-wide review rate limit before producing a completed review. The staged migration patch remains in this checkout and has passed its local validations.
+
+Resume boundary: after the review quota is available, run `coderabbit review --agent` against the staged patch; address any findings; rerun the affected checks plus the final just check; commit the named source files; push main; verify CI by that commit SHA and then finalize the acceptance criteria. Do not treat the earlier rate-limit response as a completed review.
+
+The uncommitted source patch has stable patch identity f9ffbfe7d91bc246f993ab3568abb7d6647c9cb0. Preserve it in this checkout while the CodeRabbit gate is unavailable; if it must be transferred, compare that patch identity before applying.
+<!-- SECTION:NOTES:END -->
 
 ## Comments
 

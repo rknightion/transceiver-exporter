@@ -7,6 +7,7 @@ import (
 	"os"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -18,6 +19,12 @@ import (
 // builds override it via -ldflags "-X main.version=...". Keep it as "dev" so a
 // plain `go build`/`go install` never reports a stale release number.
 var version = "dev"
+
+const (
+	serverReadHeaderTimeout = 5 * time.Second
+	serverReadTimeout       = 10 * time.Second
+	serverIdleTimeout       = 60 * time.Second
+)
 
 var (
 	showVersion              = flag.Bool("version", false, "Print version and exit")
@@ -85,8 +92,20 @@ func startServer() {
 	})
 	http.HandleFunc(*metricsPath, handleMetricsRequest)
 
-	log.Infof("Listening on %s", *listenAddress)
-	log.Fatal(http.ListenAndServe(*listenAddress, nil))
+	server := newServer()
+	log.Infof("Listening on %s", server.Addr)
+	log.Fatal(server.ListenAndServe())
+}
+
+// newServer applies bounded connection setup and keep-alive waits while leaving
+// scraper response time under the handler's control.
+func newServer() *http.Server {
+	return &http.Server{
+		Addr:              *listenAddress,
+		ReadHeaderTimeout: serverReadHeaderTimeout,
+		ReadTimeout:       serverReadTimeout,
+		IdleTimeout:       serverIdleTimeout,
+	}
 }
 
 type transceiverCollectorWrapper struct {

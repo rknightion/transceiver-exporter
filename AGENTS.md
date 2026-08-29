@@ -7,23 +7,34 @@ is now `github.com/rknightion/transceiver-exporter` but it still depends on `git
 Claude Code and Codex both read this file. `CLAUDE.md` is a one-line import of it so the two cannot
 drift apart — put instructions here, never there.
 
-## The gate
+## Task interface
+
+This repo's task surface is a `justfile`. Discover it, don't guess it:
 
 ```bash
-go build ./...
-go vet ./...
-go test -race ./...
-golangci-lint run
+just --list                        # human-readable
+just --dump --dump-format json     # machine-readable
+just --show <recipe>               # what a recipe actually runs
 ```
 
-These are the four items every new task inherits as its definition of done. CI additionally
-verifies the Docker build; `coverage` is deliberately not a required check.
+### The gate
+
+- `just check` is the pre-commit gate. CI enforces its component checks and separately gates the
+  snapshot and image legs represented by `just ci`.
+- Prefer `just <recipe>` over invoking an underlying tool directly.
+- Run `just` with stdin from `/dev/null`. This repo has no `[confirm]` recipes today, but if one is
+  added later, stop and ask before running it; never pass `--yes` or `JUST_YES=1`.
+- If a task needs an absent task-surface command, add a documented, grouped recipe instead of a
+  bare command.
+
+Coverage remains informational and is deliberately not a required check.
 
 **The gate cannot see the hardware.** The exporter's real work is decoding EEPROM from physical
 optics on a Linux host — there is no such host in CI, no simulator and no captured-EEPROM fixtures.
-A green gate on a decoding change proves it compiles and lints, not that it is correct. Say which
-claims are gate-backed and which are reasoned; do not collapse the two. The **Wave operating model**
-document owns the consequences of this and the recurring defects it produces.
+A green gate on a decoding change proves compilation, static analysis, and pure helpers, not correct
+EEPROM decoding. Say which claims are gate-backed and which are reasoned; do not collapse the two.
+The **Wave operating model** document owns the consequences of this and the recurring defects it
+produces.
 
 ## Commits and releases
 

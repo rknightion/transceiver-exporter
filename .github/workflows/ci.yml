@@ -15,8 +15,8 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
-  tests:
-    name: Tests & Linters
+  build-test:
+    name: Build, test, and race
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -26,39 +26,102 @@ jobs:
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version-file: go.mod
+          cache: true
 
-      - name: Run linters
-        uses: golangci/golangci-lint-action@ba0d7d2ec06a0ea1cb5fa41b2e4a3ab91d21278a # v9.3.0
+      - uses: extractions/setup-just@53165ef7e734c5c07cb06b3c8e7b647c5aa16db3 # v4
         with:
-          version: latest
-          args: --verbose
+          just-version: '1.58.0'
 
-      - name: Run tests
-        run: go test -v ./...
+      - name: Check justfile formatting
+        run: just fmt-check
 
-  docker-build-verify:
-    name: Docker build (verify only)
+      - name: Build, test, and race
+        run: just test
+
+  lint:
+    name: golangci-lint and gosec
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - uses: extractions/setup-just@53165ef7e734c5c07cb06b3c8e7b647c5aa16db3 # v4
+        with:
+          just-version: '1.58.0'
+
+      - name: Lint
+        run: just lint
+
+  govulncheck:
+    name: govulncheck
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - uses: extractions/setup-just@53165ef7e734c5c07cb06b3c8e7b647c5aa16db3 # v4
+        with:
+          just-version: '1.58.0'
+
+      - name: Scan dependencies
+        run: just vuln
+
+  goreleaser-snapshot:
+    name: GoReleaser snapshot
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - uses: extractions/setup-just@53165ef7e734c5c07cb06b3c8e7b647c5aa16db3 # v4
+        with:
+          just-version: '1.58.0'
+
+      - name: Build snapshot
+        run: just snapshot
+
+  docker-build:
+    name: Docker image build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: extractions/setup-just@53165ef7e734c5c07cb06b3c8e7b647c5aa16db3 # v4
+        with:
+          just-version: '1.58.0'
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4.3.0
 
-      - name: Build Docker image (verify only)
-        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
-        with:
-          context: .
-          push: false
-          load: true
-          tags: transceiver-exporter:ci-test
-          build-args: |
-            VERSION=ci-test
-            COMMIT=ci-test
-          cache-from: type=gha,scope=build-verify
-          cache-to: type=gha,scope=build-verify,mode=max
+      - name: Build Docker image
+        env:
+          VERSION: ci-${{ github.sha }}
+          COMMIT: ${{ github.sha }}
+        run: just image transceiver-exporter:ci-test
 
   # Test coverage -> Codacy. Deliberately NOT in ci-success's `needs`: coverage reporting is
   # informational, so a Codacy outage — or a fork PR with no secret — must never block merges or
@@ -77,9 +140,14 @@ jobs:
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version-file: go.mod
+          cache: true
+
+      - uses: extractions/setup-just@53165ef7e734c5c07cb06b3c8e7b647c5aa16db3 # v4
+        with:
+          just-version: '1.58.0'
 
       - name: Generate coverage profile
-        run: go test -covermode=atomic -coverprofile=coverage.out ./...
+        run: just coverage
 
       - name: Upload coverage to Codacy
         if: ${{ env.CODACY_PROJECT_TOKEN != '' }}   # skip on fork PRs (secret unavailable)
@@ -90,36 +158,13 @@ jobs:
           force-coverage-parser: go
 
   # Single required status check. Branch protection on `main` requires ONLY this job, so the gate's
-  # jobs (tests / docker build-verify) can be added or renamed without re-touching protection.
+  # jobs can be added or renamed without re-touching protection.
   # NOTE: `coverage` is intentionally absent from `needs` — see its comment above.
-  # Dependency vulnerability scan against the Go vulnerability database.
-  # Pinned to v1.3.0 to match tailscale2otel, graph2otel, polylens2otel and
-  # rfc6035-2otel, which is what the rest of the 2otel family runs.
-  govulncheck:
-    name: govulncheck
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-
-      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
-        with:
-          go-version-file: go.mod
-          cache: true
-
-      - name: install govulncheck (pinned)
-        run: go install golang.org/x/vuln/cmd/govulncheck@v1.3.0
-
-      - name: govulncheck
-        run: govulncheck ./...
-
   ci-success:
     name: ci-success
     runs-on: ubuntu-24.04
     if: always()
-    needs: [tests, docker-build-verify, govulncheck]
+    needs: [build-test, lint, govulncheck, goreleaser-snapshot, docker-build]
     steps:
       - name: Fail if any required job did not pass
         if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}

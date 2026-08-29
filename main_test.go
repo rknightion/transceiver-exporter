@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"testing"
+	"time"
+)
 
 // strptr returns a pointer to s, matching the *string type of the flag globals.
 func strptr(s string) *string { return &s }
@@ -49,4 +52,26 @@ func TestCompileRegexFlags(t *testing.T) {
 			t.Error("compileRegexFlags() should error on invalid include regex")
 		}
 	})
+}
+
+func TestNewServerConfiguresHTTPTimeouts(t *testing.T) {
+	originalListenAddress := listenAddress
+	listenAddress = strptr("127.0.0.1:0")
+	t.Cleanup(func() {
+		listenAddress = originalListenAddress
+	})
+
+	server := newServer()
+	if got, want := server.Addr, "127.0.0.1:0"; got != want {
+		t.Errorf("server address = %q, want %q", got, want)
+	}
+	if got, want := server.ReadHeaderTimeout, 5*time.Second; got != want {
+		t.Errorf("server ReadHeaderTimeout = %s, want %s", got, want)
+	}
+	if got, want := server.ReadTimeout, 10*time.Second; got != want {
+		t.Errorf("server ReadTimeout = %s, want %s", got, want)
+	}
+	if got, want := server.IdleTimeout, time.Minute; got != want {
+		t.Errorf("server IdleTimeout = %s, want %s", got, want)
+	}
 }

@@ -56,6 +56,9 @@ transceiver-exporter
 # GoReleaser build output
 /dist/
 
+# Local developer build output
+/bin/
+
 # zensical local build output. The published site is built independently by the
 # rknightion/m7kni-net-site hub from docs/ + docs.toml.
 /site/

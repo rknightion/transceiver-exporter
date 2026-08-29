@@ -1,4 +1,14 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "postUpdateOptions": ["gomodTidy"]
+  "postUpdateOptions": ["gomodTidy"],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Update Renovate-annotated tooling pins in the justfile.",
+      "managerFilePatterns": ["/^justfile$/"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>[^\\s]+) depName=(?<depName>[^\\s]+)\\s+[a-z_]+_version\\s*:=\\s*\\\"(?<currentValue>v[^\\\"]+)\\\""
+      ]
+    }
+  ]
 }

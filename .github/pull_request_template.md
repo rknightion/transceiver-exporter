@@ -11,9 +11,7 @@
 
 ## Checklist
 
-- [ ] `go build ./...` passes
-- [ ] `go vet ./...` passes
-- [ ] `go test -race ./...` passes
+- [ ] `just check` passes
 - [ ] Tests added/updated where it makes sense
 - [ ] Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/)
 - [ ] Docs (README / flags / metrics) updated if behaviour changed

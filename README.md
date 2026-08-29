@@ -41,9 +41,16 @@ docker compose up -d
 
 ### From source
 
+Building from source needs [`just`](https://just.systems) on your `PATH`:
+
 ```bash
-go build -o transceiver-exporter .
-./transceiver-exporter -web.listen-address="[::]:9458"
+brew install just          # macOS
+cargo install just         # any platform with a Rust toolchain
+```
+
+```bash
+just build
+./bin/transceiver-exporter -web.listen-address="[::]:9458"
 ```
 
 Metrics are then available at `http://<host>:9458/metrics`.

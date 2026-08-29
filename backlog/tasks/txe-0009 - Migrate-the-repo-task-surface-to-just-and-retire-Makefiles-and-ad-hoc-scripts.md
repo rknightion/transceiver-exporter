@@ -1,10 +1,10 @@
 ---
 id: TXE-0009
 title: Migrate the repo task surface to just and retire Makefiles and ad-hoc scripts
-status: Parked
+status: Done
 assignee: []
 created_date: '2026-08-28 19:27'
-updated_date: '2026-08-29 14:52'
+updated_date: '2026-08-29 18:18'
 labels:
   - 'wave:2-fleet'
 dependencies: []
@@ -383,6 +383,8 @@ Resume boundary: after the review quota is available, run `coderabbit review --a
 The uncommitted source patch has stable patch identity f9ffbfe7d91bc246f993ab3568abb7d6647c9cb0. Preserve it in this checkout while the CodeRabbit gate is unavailable; if it must be transferred, compare that patch identity before applying.
 
 Correction after parking: the source patch was deliberately unstaged so only the tracker state could be committed. It remains intact in the working tree, not in the index; its full stable patch identity remains f9ffbfe7d91bc246f993ab3568abb7d6647c9cb0.
+
+Unparked and completed 2026-08-29. CodeRabbit returned three findings, all fixed: a README prerequisite, a missing `just fmt-check` in CI, and an unset ReadTimeout on the metrics server pinned by a new test. Migration at 9b95a91; exact-head CI green.
 <!-- SECTION:NOTES:END -->
 
 ## Comments

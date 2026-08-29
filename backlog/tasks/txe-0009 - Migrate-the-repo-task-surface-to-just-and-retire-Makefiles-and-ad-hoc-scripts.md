@@ -4,7 +4,7 @@ title: Migrate the repo task surface to just and retire Makefiles and ad-hoc scr
 status: Parked
 assignee: []
 created_date: '2026-08-28 19:27'
-updated_date: '2026-08-29 14:50'
+updated_date: '2026-08-29 14:52'
 labels:
   - 'wave:2-fleet'
 dependencies: []
@@ -381,6 +381,8 @@ Parked before any source commit or push because CodeRabbit returned an organisat
 Resume boundary: after the review quota is available, run `coderabbit review --agent` against the staged patch; address any findings; rerun the affected checks plus the final just check; commit the named source files; push main; verify CI by that commit SHA and then finalize the acceptance criteria. Do not treat the earlier rate-limit response as a completed review.
 
 The uncommitted source patch has stable patch identity f9ffbfe7d91bc246f993ab3568abb7d6647c9cb0. Preserve it in this checkout while the CodeRabbit gate is unavailable; if it must be transferred, compare that patch identity before applying.
+
+Correction after parking: the source patch was deliberately unstaged so only the tracker state could be committed. It remains intact in the working tree, not in the index; its full stable patch identity remains f9ffbfe7d91bc246f993ab3568abb7d6647c9cb0.
 <!-- SECTION:NOTES:END -->
 
 ## Comments

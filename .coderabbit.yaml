@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+# Product-specific additions to the central CodeRabbit defaults.
+# Keep inheritance enabled; shared review policy lives in the owner/coderabbit repository.
+inheritance: true
+reviews:
+  path_instructions:
+  - path: transceiver-collector/*.go
+    instructions: >-
+      Review EEPROM and DOM decoding against the kernel/go-ethtool shapes and preserve interface-level
+      failure isolation. Missing EEPROM support, absent modules, unsupported DOM, unsupported lasers and
+      unsupported thresholds mean the corresponding metric families are absent; do not synthesize zero
+      measurements. Check unit conversions, especially mW versus dBm and threshold parity, and bound labels
+      to the documented interface, laser index and device-info fields.
+  - path: main.go
+    instructions: >-
+      Each scrape creates a fresh collector and performs live ioctl work; preserve failure handling that
+      lets healthy interfaces continue. Host networking and the required ioctl capability are functional
+      deployment requirements, so do not report them as avoidable privilege without an alternative that
+      can still reach host NICs.

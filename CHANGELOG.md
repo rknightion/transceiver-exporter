@@ -1,5 +1,70 @@
 # Changelog
 
+## [2.0.0](https://github.com/rknightion/transceiver-exporter/compare/v1.6.0...v2.0.0) (2026-09-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* This release renames every exported metric from the `transceiver_` prefix to `transceiver_exporter_`; dashboards and alerts must be updated. Additionally, `linux/386` and `linux/arm`/`armv7` release binaries and container images are no longer produced — only `linux/amd64` and `linux/arm64` are supported.
+
+### Features
+
+* **ci:** add govulncheck to align with the rest of the 2otel family ([f67fe75](https://github.com/rknightion/transceiver-exporter/commit/f67fe75b214a7a5265845e0e437866e818d5e67f))
+* mint release-please token from the OpenBao broker ([f8138f7](https://github.com/rknightion/transceiver-exporter/commit/f8138f743d88589e4513be150a64f7b66da9be69))
+
+
+### Bug Fixes
+
+* author is Rob Knight, not Rob Knighton ([67d5b69](https://github.com/rknightion/transceiver-exporter/commit/67d5b69d63b2854cfcf3a307b3d792dcff9a7e8d))
+* **ci:** repin rknightion/.github refs to v1.9.7 so Renovate can track them ([2485ebd](https://github.com/rknightion/transceiver-exporter/commit/2485ebdd1049d9537232f170065a00205802f2a9))
+* **collector:** use transceiver_exporter_ metric prefix and build descriptors once ([36800a4](https://github.com/rknightion/transceiver-exporter/commit/36800a45fc0fff7655f3cd597c205775cf4931bc))
+* default version to "dev" instead of stale release string ([9790544](https://github.com/rknightion/transceiver-exporter/commit/9790544067d73a094194acfc0e54b8f264b4f17d))
+* **deps:** update module github.com/prometheus/client_golang to v1.24.1 ([#8](https://github.com/rknightion/transceiver-exporter/issues/8)) ([758f6b5](https://github.com/rknightion/transceiver-exporter/commit/758f6b5514bf542babd04e60acfb9473fb47b0f5))
+* **deps:** update module github.com/sirupsen/logrus to v1.10.0 ([#11](https://github.com/rknightion/transceiver-exporter/issues/11)) ([77227fb](https://github.com/rknightion/transceiver-exporter/commit/77227fb6df2ee40b2b895fefa5eda58edeb1c006))
+* **deps:** update module github.com/sirupsen/logrus to v1.10.1 ([#12](https://github.com/rknightion/transceiver-exporter/issues/12)) ([ec5801d](https://github.com/rknightion/transceiver-exporter/commit/ec5801dfc82abc63da817cef8fed4c4a15939a43))
+* **deps:** update module github.com/sirupsen/logrus to v1.10.2 ([#15](https://github.com/rknightion/transceiver-exporter/issues/15)) ([b0e53e1](https://github.com/rknightion/transceiver-exporter/commit/b0e53e1f9630232c7b0767a77f889a7f0f996e73))
+* **deps:** update module github.com/wobcom/go-ethtool to v1.0.2 ([#27](https://github.com/rknightion/transceiver-exporter/issues/27)) ([bd4ac28](https://github.com/rknightion/transceiver-exporter/commit/bd4ac28cf3b6890ea8a293b30f1c5a45153c331e))
+
+
+### Documentation
+
+* add community-health files and v1 roadmap ([3854a50](https://github.com/rknightion/transceiver-exporter/commit/3854a50f52ab4dbe7f48450023a781f85a1999ca))
+* **backlog:** complete Go 1.27 upgrade ([99de885](https://github.com/rknightion/transceiver-exporter/commit/99de88590aec5a92d3fc90320857dac06d97a333))
+* **backlog:** sync fan-out protocol — CodeRabbit review gate ([7963110](https://github.com/rknightion/transceiver-exporter/commit/796311083563ebc15d9a81bfcdaae795fb67f014))
+* **backlog:** sync fan-out protocol — success criteria vs write authority ([b417c72](https://github.com/rknightion/transceiver-exporter/commit/b417c72ff52a38790e25b2020dafc73c26879993))
+* document all metrics, add install/Docker guide, refresh attribution ([bbf7ed3](https://github.com/rknightion/transceiver-exporter/commit/bbf7ed3f70068a9512078f5fe84136ad5a69ab44))
+* improve search result descriptions ([3d04ed3](https://github.com/rknightion/transceiver-exporter/commit/3d04ed31a738626cc4b261b8e394d831ccc7c695))
+* publish a documentation site and join the m7kni.io fleet ([25e26df](https://github.com/rknightion/transceiver-exporter/commit/25e26df70db3fe685389f2b71adc07d6a7bd83fd))
+* put a copy-paste quickstart on the landing page ([c527f66](https://github.com/rknightion/transceiver-exporter/commit/c527f660bee9a8e884a8859704d001ccdc077cbf))
+* re-import fan-out protocol (context-cost rules) ([0962df7](https://github.com/rknightion/transceiver-exporter/commit/0962df771a19d958c176b2b8233ecd333b450b2b))
+* re-import the fan-out protocol at c1e6cb0 ([957fc50](https://github.com/rknightion/transceiver-exporter/commit/957fc50c526030ec720913c54bfb08e01d957203))
+* re-render the fan-out protocol from agent-docs ([6a96261](https://github.com/rknightion/transceiver-exporter/commit/6a96261292cbc563742660dbf374606fba5d5466))
+* re-render the fan-out protocol from agent-docs 711db6c ([6a29d16](https://github.com/rknightion/transceiver-exporter/commit/6a29d16bce61d706d13cd666a2eb824f8fb554f1))
+* re-render the fan-out protocol from agent-docs b0d76d8 ([c9958a5](https://github.com/rknightion/transceiver-exporter/commit/c9958a5911d89741fdab106cab3e1d7f63853ec1))
+* **readme:** lead with what the project is ([508017f](https://github.com/rknightion/transceiver-exporter/commit/508017fb86f1c87525ac047f982ba5b8d780efee))
+* repoint moved repo references after the org consolidation ([060ed20](https://github.com/rknightion/transceiver-exporter/commit/060ed20713f7139830f80298fe4c523cba6ea8b5))
+* sync agent-docs, a wave's launch message is a file not a chat block ([9e796ac](https://github.com/rknightion/transceiver-exporter/commit/9e796ac6f96e4d3205275e3d0424bf09f1c5897c))
+* sync Astra routing and default wave reports to files ([428066f](https://github.com/rknightion/transceiver-exporter/commit/428066f9cc485fecbdb27083c96ab7bc3fea7f71))
+* sync nineteen-worker Codex fan-out guidance ([cc0f88b](https://github.com/rknightion/transceiver-exporter/commit/cc0f88be9af634a23628a5ff3287dc285dee2d9d))
+* sync wave-root stage authority and lab-Mac GUI gate ([8c9a88d](https://github.com/rknightion/transceiver-exporter/commit/8c9a88d957b440ce9ed10303cefc0cf31326d15e))
+* **tracker:** align canonical fan-out protocol ([b571e5e](https://github.com/rknightion/transceiver-exporter/commit/b571e5ea9534c3e65ee3215366d0f897bfef490d))
+* **tracker:** correct the canonical owner in the rendered header ([b209dfd](https://github.com/rknightion/transceiver-exporter/commit/b209dfd92630c8d0b8403be6f1354f76467ebbd1))
+* **tracker:** re-import the fan-out protocol from canonical ([6574322](https://github.com/rknightion/transceiver-exporter/commit/65743225a5da262349a1aac454bc22936fb481bf))
+* **tracker:** render agent documents from the canonical source ([52d93a6](https://github.com/rknightion/transceiver-exporter/commit/52d93a611151932adbc88d62861d22b5d495c2e4))
+
+
+### Build & CI
+
+* add auto-rc, arm-automerge and ghcr-cleanup ([1b1bd42](https://github.com/rknightion/transceiver-exporter/commit/1b1bd4239b3f1969bef949bb6ccddf765c7706e6))
+* **auto-rc:** trigger on CI completion instead of push ([25a860d](https://github.com/rknightion/transceiver-exporter/commit/25a860dc1e93d47eb25fdc1a0f7fe7e08339a5af))
+* bump the broker-token action pin ([cf476b6](https://github.com/rknightion/transceiver-exporter/commit/cf476b6ebf6181f99d4717979d015ce42e483b8f))
+* docs-sync and grafana-sync targets moved to the m7kni org ([a5c6e9e](https://github.com/rknightion/transceiver-exporter/commit/a5c6e9eb90ee982591d43509b1529ecd6d6268f9))
+* **release:** repin shared binaries workflow, grant attestations: write ([e7037d5](https://github.com/rknightion/transceiver-exporter/commit/e7037d5c552d14e7c605f350e2d956afea90859d))
+* repin the release-automation reusables to v1.8.0 ([408b40f](https://github.com/rknightion/transceiver-exporter/commit/408b40f0de99ff7cc7afe512c8520570a043841f))
+* repin the shared reusables to v1.18.1 ([19411d8](https://github.com/rknightion/transceiver-exporter/commit/19411d858c797ef4864116d90836fc273dbc606f))
+* ship only linux/amd64 and linux/arm64 ([2b50c83](https://github.com/rknightion/transceiver-exporter/commit/2b50c83f3095de7ad142b1231ff6906c69003658))
+* upgrade to Go 1.27 ([2d6f5fc](https://github.com/rknightion/transceiver-exporter/commit/2d6f5fcd972a185f0438be54517df0a955453750))
+
 ## [1.6.0](https://github.com/rknightion/transceiver-exporter/compare/v1.5.1...v1.6.0) (2026-07-03)
 
 

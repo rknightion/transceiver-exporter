@@ -38,10 +38,16 @@ alongside it.
   not the instance; aggregate counts, timings and structural findings are fine. Sweep before
   committing:
 
-      grep -rniE "rob-knight\.|@gmail|[0-9]{1,3}(\.[0-9]{1,3}){3}" backlog/ && echo "PII FOUND"
+      grep -rniE "rob-knight\.net|@gmail|@rob-knight|[0-9]{1,3}(\.[0-9]{1,3}){3}" backlog/ && echo "PII FOUND"
 
-- `backlog/config.yml` is the one file exempt from driving the tracker through its CLI, because
-  list-valued keys cannot be set through `backlog config set`.
+- Never `--notes` or `--plan` bare. They replace the whole section and exit 0, destroying another
+  session's writes with no warning. Use `--append-notes` and `--append-plan`; a global guard hook
+  denies the bare forms.
+- Never hand-edit task, draft, doc, decision or milestone markdown. Section boundaries are
+  HTML-comment markers; break one and the section is silently dropped at exit 0, still in the file
+  but invisible to the CLI until the next write destroys it for real. There is no repair command,
+  and `backlog doctor` only fixes duplicate task IDs. `backlog/config.yml` is the one exception and
+  is hand-edited, because list-valued keys cannot be set through `backlog config set`.
 - Finalize in one call, so an interrupted session cannot leave finished work looking unfinished:
   `backlog task edit TXE-0007 --check-ac 1 --check-ac 2 -s Done`.
 - Never let two agents edit the same task. The upstream concurrent-edit fix covers the edit funnel

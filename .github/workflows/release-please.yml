@@ -81,7 +81,7 @@ jobs:
     uses: rknightion/.github/.github/workflows/binaries.yml@8d14adaa295c4a7670b1d4e744b070955b710598 # v1.24.0
     with:
       release-tag: ${{ needs.release-please.outputs.tag_name }}
-      go-version: "1.27.0"
+      go-version: "1.27.1"
       goreleaser-args: "release --clean --skip=docker"
       install-cosign: true # keyless-sign the checksums (see .goreleaser.yaml signs:)
       pre-cmd: "go install github.com/anchore/syft/cmd/syft@v1.18.1"

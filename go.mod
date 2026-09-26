@@ -1,6 +1,6 @@
 module github.com/rknightion/transceiver-exporter
 
-go 1.27.0
+go 1.27.1
 
 require (
 	github.com/pkg/errors v0.9.1

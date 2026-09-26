@@ -82,3 +82,6 @@ docs/superpowers/
 # Only the shared Claude Code config is tracked: settings.json and hooks/, so the Backlog.md guard
 # worktrees, scheduler locks, settings.local.json.
 .claude/
+
+# Machine-local agent artefacts, never committed
+codex/

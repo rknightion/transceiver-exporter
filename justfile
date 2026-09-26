@@ -8,7 +8,7 @@ golangci_lint_version := "v2.14.0"
 # renovate: datasource=go depName=golang.org/x/vuln
 govulncheck_version := "v1.8.0"
 # renovate: datasource=go depName=github.com/goreleaser/goreleaser/v2
-goreleaser_version := "v2.18.0"
+goreleaser_version := "v2.18.2"
 
 # show the task surface
 default:

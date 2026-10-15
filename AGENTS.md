@@ -40,9 +40,7 @@ alongside it.
 
       grep -rniE "rob-knight\.net|@gmail|@rob-knight|[0-9]{1,3}(\.[0-9]{1,3}){3}" backlog/ && echo "PII FOUND"
 
-Read the `Agent fan-out protocol (canonical)` doc before designing a wave, and `Wave operating model`
-for this project's lane conventions, ownership, escape hatch and the recurring defects the hardware
-boundary above produces. Both are in `backlog doc list --plain`.
+Loops: the protocol lives in `~/repos/agent-docs/sources/loop/` (this board's "Loop protocol pointer" doc points there); this repository's loop facts are in `LOOP.md`.
 
 ## Deeper references
 

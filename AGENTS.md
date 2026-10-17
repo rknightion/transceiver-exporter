@@ -16,6 +16,10 @@ fixtures. A green gate on a decoding change proves compilation, static analysis 
 not correct decoding. Say which claims are gate-backed and which are reasoned; never collapse the
 two. `just run` needs `CAP_NET_ADMIN` to read real EEPROM.
 
+Off the Mac, when the remote gate runner is installed (`which gaterun`): `gaterun -- just ci` (or
+`just check`), paced across lanes with `gaterun-slot <lane> -- gaterun -- just ci`; `.gaterunner.yaml`
+is its contract. Run one test or package locally.
+
 ## Commits and releases
 
 Conventional Commit subjects are load-bearing: release-please derives the version bump from them,

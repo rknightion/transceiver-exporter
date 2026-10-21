@@ -1,0 +1,4 @@
+# Hosted runner supported by GitHub but absent from the pinned actionlint catalogue.
+self-hosted-runner:
+  labels:
+    - ubuntu-26.04

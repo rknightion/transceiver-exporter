@@ -6,7 +6,7 @@
 # ------------------------------------------------------------------------------
 # Stage 1: Build stage
 # ------------------------------------------------------------------------------
-FROM --platform=$BUILDPLATFORM golang:1.27.3-alpine AS builder
+FROM --platform=$BUILDPLATFORM golang:1.27.3-alpine@sha256:f2c872bcee949b7be9c490efd02b48a8a2fbf947cdf533f1c58525ec9d8170fd AS builder
 
 # Set working directory
 WORKDIR /src
@@ -45,7 +45,7 @@ RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} \
 # Includes: CA certs, tzdata, /tmp
 # Note: Runs as root (required for ethtool module EEPROM access)
 # ------------------------------------------------------------------------------
-FROM gcr.io/distroless/static-debian13
+FROM gcr.io/distroless/static-debian13:latest@sha256:034df5c1737e8241f6ed6423a12e720ee0f6d6f088609ee172f98f6f2166ef5d
 
 # OCI image labels
 LABEL org.opencontainers.image.title="transceiver-exporter"

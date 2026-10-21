@@ -20,6 +20,8 @@ Off the Mac, when the remote gate runner is installed (`which gaterun`): `gateru
 `just check`), paced across lanes with `gaterun-slot <lane> -- gaterun -- just ci`; `.gaterunner.yaml`
 is its contract. Run one test or package locally.
 
+Release and RC binary workflows read the Go version from `go.mod` through the shared binaries reusable; avoid a separate `go-version` override. The runtime image digest includes Debian ca-certificates `20250419+deb13u1`.
+
 ## Commits and releases
 
 Conventional Commit subjects are load-bearing: release-please derives the version bump from them,

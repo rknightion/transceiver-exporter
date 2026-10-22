@@ -78,7 +78,7 @@ jobs:
       id-token: write
       packages: write
       attestations: write # SLSA build provenance (.intoto.jsonl) attached to the release
-    uses: rknightion/.github/.github/workflows/binaries.yml@1ef5b4069a71244f927ff38e962daeba19d2ea63 # v1.25.23
+    uses: rknightion/.github/.github/workflows/binaries.yml@25774fddcf21225cd249db33e61f1c3fa092da83 # v1.25.24
     with:
       release-tag: ${{ needs.release-please.outputs.tag_name }}
       goreleaser-args: "release --clean --skip=docker"

@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.1](https://github.com/rknightion/transceiver-exporter/compare/v2.0.0...v2.0.1) (2026-10-28)
+
+
+### Build & CI
+
+* **auto-rc:** only cut RCs for pushes from this repository ([c2bb19b](https://github.com/rknightion/transceiver-exporter/commit/c2bb19b9175e98e7aee4569d06b41e8a330546ca))
+* clear the zizmor findings that fail fork pull requests ([5e6ee66](https://github.com/rknightion/transceiver-exporter/commit/5e6ee66a56db04c6666710835f7dc9b34237ad56))
+
 ## [2.0.0](https://github.com/rknightion/transceiver-exporter/compare/v1.6.0...v2.0.0) (2026-10-21)
 
 

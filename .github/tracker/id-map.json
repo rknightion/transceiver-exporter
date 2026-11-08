@@ -1,0 +1,46 @@
+{
+ "held": {},
+ "issues": {
+  "TXE-0001": {
+   "number": 83,
+   "url": "https://github.com/rknightion/transceiver-exporter/issues/83"
+  },
+  "TXE-0002": {
+   "number": 84,
+   "url": "https://github.com/rknightion/transceiver-exporter/issues/84"
+  },
+  "TXE-0003": {
+   "number": 85,
+   "url": "https://github.com/rknightion/transceiver-exporter/issues/85"
+  },
+  "TXE-0004": {
+   "number": 86,
+   "url": "https://github.com/rknightion/transceiver-exporter/issues/86"
+  },
+  "TXE-0005": {
+   "number": 87,
+   "url": "https://github.com/rknightion/transceiver-exporter/issues/87"
+  },
+  "TXE-0006": {
+   "number": 88,
+   "url": "https://github.com/rknightion/transceiver-exporter/issues/88"
+  },
+  "TXE-0007": {
+   "number": 89,
+   "url": "https://github.com/rknightion/transceiver-exporter/issues/89"
+  },
+  "TXE-0008": {
+   "number": 90,
+   "url": "https://github.com/rknightion/transceiver-exporter/issues/90"
+  },
+  "TXE-0009": {
+   "number": 91,
+   "url": "https://github.com/rknightion/transceiver-exporter/issues/91"
+  }
+ },
+ "prefix": "TXE",
+ "repo": "rknightion/transceiver-exporter",
+ "schema": 1,
+ "source_sha": "87e26b61b9983b6758d835fc87dff81784841fc9",
+ "synthetic": []
+}

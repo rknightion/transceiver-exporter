@@ -164,11 +164,13 @@ jobs:
   # only pull requests with a closing keyword (enforce-all-prs: false), because this repository takes
   # outside and bot pull requests. Check run: `ac-evidence / Acceptance evidence`.
   ac-evidence:
+    # The reusable fails on any event but pull_request; on a push to main this job is skipped.
+    if: github.event_name == 'pull_request'
     permissions:
       contents: read
       issues: read
       pull-requests: read
-    uses: rknightion/.github/.github/workflows/ac-evidence.yml@f2fd1788b71a61808db8af0302edecf80b5b6959 # v1.26.0
+    uses: rknightion/.github/.github/workflows/ac-evidence.yml@8f00b7fb896191e598f12ed565395697c539add1 # v1.26.9
 
   # The lines a pull request adds carry no identifier, email address, public address or credential
   # shape. The reusable fails on any event but pull_request, so it runs on pull requests only.
@@ -177,7 +179,7 @@ jobs:
     if: github.event_name == 'pull_request'
     permissions:
       contents: read
-    uses: rknightion/.github/.github/workflows/privacy-sweep.yml@f2fd1788b71a61808db8af0302edecf80b5b6959 # v1.26.0
+    uses: rknightion/.github/.github/workflows/privacy-sweep.yml@8f00b7fb896191e598f12ed565395697c539add1 # v1.26.9
 
   # The Backlog.md board is retired: issues are the queue. A pull request may delete files under
   # backlog/ or move them out, never add or change one there. Reads the file list from the API, so

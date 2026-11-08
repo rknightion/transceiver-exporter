@@ -79,9 +79,10 @@ docs/fonts/
 # Superpowers scratch (specs/plans/audits) — never committed
 docs/superpowers/
 
-# Only the shared Claude Code config is tracked: settings.json and hooks/, so the Backlog.md guard
-# worktrees, scheduler locks, settings.local.json.
-.claude/
+# Claude Code local state (worktrees, scheduler locks, settings.local.json) is never committed.
+# .claude/skills/ is tracked: it holds the links to the contributor skills in .agents/skills/.
+.claude/*
+!.claude/skills/
 
 # Machine-local agent artefacts, never committed
 codex/

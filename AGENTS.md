@@ -16,10 +16,6 @@ fixtures. A green gate on a decoding change proves compilation, static analysis 
 not correct decoding. Say which claims are gate-backed and which are reasoned; never collapse the
 two. `just run` needs `CAP_NET_ADMIN` to read real EEPROM.
 
-Off the Mac, when the remote gate runner is installed (`which gaterun`): `gaterun -- just ci` (or
-`just check`), paced across lanes with `gaterun-slot <lane> -- gaterun -- just ci`; `.gaterunner.yaml`
-is its contract. Run one test or package locally.
-
 Release and RC binary workflows read the Go version from `go.mod` through the shared binaries reusable; avoid a separate `go-version` override. The runtime image digest includes Debian ca-certificates `20250419+deb13u1`.
 
 ## Commits and releases
@@ -34,46 +30,25 @@ are gitignored here on purpose: `zensical.toml`, `docs/overrides/`, `docs/styles
 `docs/assets/project-icon*.svg`, `docs/assets/social-card.*` and `docs/fonts/`. Do not create them
 locally to "fix" a missing theme.
 
-## Task tracking
+## Tracking work
 
-The Backlog board is the only queue. Do not reintroduce a checklist file such as `ROADMAP.md`
-alongside it.
+Work is tracked in this repository's GitHub issues; they are the only queue. Do not add a checklist
+file such as `ROADMAP.md` beside them.
 
-- `backlog/` is committed, so tasks, docs and decisions carry no real identifiers: no email
-  addresses, handles, account IDs, host or device names, addresses or coordinates. Write the shape,
-  not the instance; aggregate counts, timings and structural findings are fine. Sweep before
-  committing:
-
-      grep -rniE "rob-knight\.net|@gmail|@rob-knight|[0-9]{1,3}(\.[0-9]{1,3}){3}" backlog/ && echo "PII FOUND"
-
-Loops: the protocol lives in `~/repos/agent-docs/sources/loop/` (this board's "Loop protocol pointer" doc points there); this repository's loop facts are in `LOOP.md`.
+- A pull request body says how it relates to an issue, on a line of its own: `Closes #N` with the
+  `Acceptance evidence` table from `.github/pull_request_template.md` (one row for each acceptance
+  criterion of that issue), `Refs #N` when it only relates to one, or `Task: none, <reason>`.
+- A pull request that changes `.github/workflows/` or `.github/actions/` carries no closing keyword:
+  write `Task: none, <reason>`, with `Refs #N` beside it if you like.
+- Contributors never need the project board or the tracker tooling; a maintainer handles both.
+- Issues and pull requests are public, so they carry no real identifiers: no email addresses,
+  handles, account ids, host or device names, addresses or coordinates. Write the shape, not the
+  instance.
+- Older commits, docs and tests cite legacy board ids such as `TXE-0001`. `just issue <ID>` prints
+  the issue each one became; `.github/tracker/id-map.json` is the map.
 
 ## Deeper references
 
 - `docs/permissions.md` - read before changing how the exporter obtains EEPROM access or what
   capabilities the container needs.
 - `docs/metrics.md` - read before adding, renaming or relabelling a metric.
-
-<!-- BACKLOG.MD GUIDELINES START -->
-<!-- backlog.md-instructions-version: 1.50.1 -->
-<CRITICAL_INSTRUCTION>
-
-## Backlog.md Workflow
-
-This project uses Backlog.md for task and project management.
-
-**For every user request in this project, run `backlog instructions overview` before answering or taking action.**
-
-Use the overview to decide whether to search, read, create, or update Backlog tasks.
-
-Before task lifecycle actions, read the matching detailed guide:
-- `backlog instructions task-creation` before creating or splitting tasks
-- `backlog instructions task-execution` before planning, changing status or assignee, adding a plan or implementation notes, or implementing task work
-- `backlog instructions task-finalization` before checking acceptance criteria, writing final summaries, or moving tasks to terminal statuses
-
-Use `backlog <command> --help` before running unfamiliar commands. Help shows options, fields, and examples.
-
-Do not edit Backlog task, draft, document, decision, or milestone markdown files directly. Use the `backlog` CLI so metadata, relationships, and history stay consistent.
-
-</CRITICAL_INSTRUCTION>
-<!-- BACKLOG.MD GUIDELINES END -->

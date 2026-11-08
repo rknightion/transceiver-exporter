@@ -3,9 +3,24 @@ tier: guarded
 gate: just check
 ci-required: ci-success
 grafana-stack: none
+tracker: github
+landing: pr
 
-`backlog/` is committed: no hostname, address or email in any task or doc (sweep in `AGENTS.md`). Run
-`just` with stdin from `/dev/null`.
+Issues are public: no hostname, address or email in any issue, pull request or doc. Run `just` with
+stdin from `/dev/null`.
+
+The tracker working model is `~/repos/agent-docs/docs/github-tracker.md` (maintainers only).
+
+## Queue
+
+- The queue is `just tracker queue`: open issues at Project Status Ready on the rknightion Project.
+- A charter selects work by labels (`type:task`, `type:bug`, `type:feature`, `needs-owner`,
+  `needs-triage`) and Project fields (Status, Priority, Effort, Lane). Never queue a `needs-owner` or
+  `needs-triage` issue.
+- Only the root writes issues and the Project, through `just tracker`. A lane returns the status and
+  the AC ticks it wants.
+- A queue row names the issue as `#N`. A legacy board id (`TXE-0001`) resolves with `just issue <ID>`;
+  `.github/tracker/id-map.json` is the map.
 
 ## Credentials
 

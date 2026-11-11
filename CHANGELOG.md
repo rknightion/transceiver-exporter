@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.0.2](https://github.com/rknightion/transceiver-exporter/compare/v2.0.1...v2.0.2) (2026-11-11)
+
+
+### Bug Fixes
+
+* **deps:** build with Go 1.27.4 ([#103](https://github.com/rknightion/transceiver-exporter/issues/103)) ([aa2d2a8](https://github.com/rknightion/transceiver-exporter/commit/aa2d2a86dfd91090fc8b5324febb239e7b492051))
+
+
+### Build & CI
+
+* run the acceptance-evidence check on pull requests only ([#99](https://github.com/rknightion/transceiver-exporter/issues/99)) ([437bf58](https://github.com/rknightion/transceiver-exporter/commit/437bf589f7046f3342d0c85b2e527460b531a62e))
+* wire the GitHub tracker tools ([87e26b6](https://github.com/rknightion/transceiver-exporter/commit/87e26b61b9983b6758d835fc87dff81784841fc9))
+* zizmor fails pull requests on findings ([#100](https://github.com/rknightion/transceiver-exporter/issues/100)) ([b32515f](https://github.com/rknightion/transceiver-exporter/commit/b32515f05e7e72bafebf9d8164aa74d23321e524))
+
 ## [2.0.1](https://github.com/rknightion/transceiver-exporter/compare/v2.0.0...v2.0.1) (2026-10-28)
 
 

@@ -1,0 +1,49 @@
+name: PR metadata shadow
+run-name: PR ${{ github.event.pull_request.number }} metadata
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, edited, reopened, synchronize, ready_for_review]
+
+permissions: {}
+
+concurrency:
+  group: pr-metadata-shadow-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  shadow:
+    if: >-
+      github.event.pull_request.draft &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.head_ref == 'ci/go-metadata-shadow'
+    permissions:
+      contents: read
+      issues: read
+      pull-requests: read
+    uses: rknightion/.github/.github/workflows/pr-metadata.yml@fa78398ef23e55bb7bc4cf545df6bd4127e2a15d # Candidate from rknightion/.github PR 226
+    with:
+      runs-on: ubuntu-latest
+      harden: true
+      check-acceptance: true
+      enforce-all-prs: true
+
+  pr-metadata-success:
+    name: pr-metadata-success
+    if: >-
+      always() && github.event.pull_request.draft &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.head_ref == 'ci/go-metadata-shadow'
+    needs: [shadow]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Require the shadow job to pass
+        env:
+          SHADOW_RESULT: ${{ needs.shadow.result }}
+        run: |
+          if [[ "$SHADOW_RESULT" != success ]]; then
+            echo "PR metadata shadow did not pass ($SHADOW_RESULT)"
+            exit 1
+          fi

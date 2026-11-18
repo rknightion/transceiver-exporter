@@ -18,6 +18,17 @@ default:
 setup:
     go mod download
 
+# warm Cursor Cloud's Go build, race test, and check-tool caches
+[script('bash')]
+cloud-bootstrap: setup
+    set -euo pipefail
+    scratch="$(mktemp -d)"
+    trap 'rm -rf "$scratch"' EXIT
+    go build ./...
+    go test -race -c -o "$scratch/" ./...
+    GOBIN="$scratch" go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@{{ golangci_lint_version }}
+    GOBIN="$scratch" go install golang.org/x/vuln/cmd/govulncheck@{{ govulncheck_version }}
+
 # format Go sources and this justfile in place
 [group('dev')]
 [script('bash')]

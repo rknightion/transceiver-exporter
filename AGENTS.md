@@ -87,6 +87,21 @@ two. `just run` needs `CAP_NET_ADMIN` to read real EEPROM.
 
 Release and RC binary workflows read the Go version from `go.mod` through the shared binaries reusable; avoid a separate `go-version` override. The runtime image digest includes Debian ca-certificates `20250419+deb13u1`.
 
+## Cursor Cloud specific instructions
+
+[`.cursor/environment.json`](.cursor/environment.json) pins the shared image by digest. When
+updating the pin, verify that the exact image pulls from GHCR without credentials for the target
+architecture, then validate a Cursor Build with the new pin.
+
+`just cloud-bootstrap` compiles the exporter, race test binaries, and the gate's pinned Go tools.
+It retains the Go caches and removes temporary binaries. Go can select a newer toolchain when
+`go.mod` requires one. Dependency downloads use the public Go module proxy, its archive redirect
+host, and the Go checksum database.
+
+Run `just test </dev/null` for a fast check and `just check </dev/null` for the full gate, including
+the public Go vulnerability database. Use CI for container and release snapshot checks, and a Linux
+host with optics for EEPROM checks.
+
 ## Commits and releases
 
 Conventional Commit subjects are load-bearing: release-please derives the version bump from them,

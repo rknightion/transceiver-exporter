@@ -18,7 +18,7 @@ jobs:
       contents: read
       issues: read
       pull-requests: read
-    uses: rknightion/.github/.github/workflows/pr-metadata.yml@c1cc41bc7a0ea1d027567f9a7003ae79e35fe870 # v1.31.6
+    uses: rknightion/.github/.github/workflows/pr-metadata.yml@6a953bba3cb0011920c4eb83ed1853a74cd397b6 # v1.31.7
     with:
       runs-on: ubuntu-latest
       harden: true
@@ -30,7 +30,7 @@ jobs:
       contents: read
       issues: read
       pull-requests: read
-    uses: rknightion/.github/.github/workflows/ac-evidence.yml@c1cc41bc7a0ea1d027567f9a7003ae79e35fe870 # v1.31.6
+    uses: rknightion/.github/.github/workflows/ac-evidence.yml@6a953bba3cb0011920c4eb83ed1853a74cd397b6 # v1.31.7
 
   pr-metadata-success:
     name: pr-metadata-success

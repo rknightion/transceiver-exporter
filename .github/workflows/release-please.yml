@@ -40,7 +40,7 @@ jobs:
       # failure here is infrastructure, not the commit.
       - name: Mint a scoped release token
         id: bao
-        uses: rknightion/.github/.github/actions/broker-token@2408a41ab6687e377b7988063a6ed2c30b91e61d # v1.32.9
+        uses: rknightion/.github/.github/actions/broker-token@a338a012f940c9f9c2bb4d116082d48fe8b35c8d # v1.33.0
         with:
           permission-set: release-please-transceiver-exporter
           tailscale-client-id: ${{ secrets.TS_WIF_CLIENT_ID }}
@@ -78,7 +78,7 @@ jobs:
       id-token: write
       packages: write
       attestations: write # SLSA build provenance (.intoto.jsonl) attached to the release
-    uses: rknightion/.github/.github/workflows/binaries.yml@2408a41ab6687e377b7988063a6ed2c30b91e61d # v1.32.9
+    uses: rknightion/.github/.github/workflows/binaries.yml@a338a012f940c9f9c2bb4d116082d48fe8b35c8d # v1.33.0
     with:
       release-tag: ${{ needs.release-please.outputs.tag_name }}
       goreleaser-args: "release --clean --skip=docker"

@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.0.2](https://github.com/rknightion/transceiver-exporter/compare/v2.0.1...v2.0.2) (2026-11-27)
+
+
+### Bug Fixes
+
+* **deps:** build with Go 1.27.4 ([#103](https://github.com/rknightion/transceiver-exporter/issues/103)) ([aa2d2a8](https://github.com/rknightion/transceiver-exporter/commit/aa2d2a86dfd91090fc8b5324febb239e7b492051))
+
+
+### Build & CI
+
+* align security workflows with the fleet standard ([18c86e0](https://github.com/rknightion/transceiver-exporter/commit/18c86e0dc1f09ecac38ad73b4be2deea72e38a9b))
+* run PR metadata checks in their own workflow so body edits do not restart CI ([#160](https://github.com/rknightion/transceiver-exporter/issues/160)) ([491d74a](https://github.com/rknightion/transceiver-exporter/commit/491d74ae5e6d5a13f64c041390485f682ed70c23))
+* run the acceptance-evidence check on pull requests only ([#99](https://github.com/rknightion/transceiver-exporter/issues/99)) ([437bf58](https://github.com/rknightion/transceiver-exporter/commit/437bf589f7046f3342d0c85b2e527460b531a62e))
+* stage the packed pull request metadata check ([bb92b0e](https://github.com/rknightion/transceiver-exporter/commit/bb92b0eaf6c0d3cd6ebad5484f41dd964bfd0741)), closes [#104](https://github.com/rknightion/transceiver-exporter/issues/104)
+* wire the GitHub tracker tools ([87e26b6](https://github.com/rknightion/transceiver-exporter/commit/87e26b61b9983b6758d835fc87dff81784841fc9))
+* zizmor fails pull requests on findings ([#100](https://github.com/rknightion/transceiver-exporter/issues/100)) ([b32515f](https://github.com/rknightion/transceiver-exporter/commit/b32515f05e7e72bafebf9d8164aa74d23321e524))
+
 ## [2.0.1](https://github.com/rknightion/transceiver-exporter/compare/v2.0.0...v2.0.1) (2026-10-28)
 
 
